@@ -1,0 +1,47 @@
+cleanRotations <- function(x) {
+  x <- gsub("Adv\\.*\\s* ", "", x)
+  x <- gsub("\\n.*", "", x)
+  x <- gsub(" /", "/", x)
+  x <- gsub("\\(.*\\)", "", x)
+  x <- gsub("\\s$", "", x)
+  x <- gsub("/$", "", x)
+  x <- gsub("/-/Away.*", "", x)
+  x <- gsub(" ", "/", x);
+  x <- gsub("//", "/", x);
+  x <- gsub("Away[?]*", "", x)
+  x <- gsub("A/I", "Allergy", x)
+  x <- gsub("Admit/", "", x)
+  x <- gsub("AI", "Allergy", x)
+  x <- gsub("Cards", "Cardiology", x)
+  x <- gsub("Adol(escent)*", "Adolescent", x)
+  x <- gsub("Advo(cacy)*", "Advocacy", x)
+  x <- gsub("Anesth(esia)*", "Anesthesia", x)
+  x <- gsub("Boot/Camp", "Boot Camp", x);
+  x <- gsub("BoM", "BOM", x)
+  x <- gsub("Derm(atology)*", "Dermatology", x)
+  x <- gsub("Dev.*", "Developmental Behavioral", x)
+  x <- gsub("Endo(crinology)*", "Endocrinology", x)
+  x <- gsub("Floor[s]*", "", x)
+  x <- gsub("Greeen", "Green", x)
+  x <- gsub("Healthy/Weight", "Healthy Weight", x);
+  x <- gsub(".*Hosp.*", "Senior Hospitalist", x)
+  x <- gsub("/Hosp.", "", x);
+  x <- gsub("Nephro(logy)*", "Nephrology", x)
+  x <- gsub("Neuro(logy)*", "Neurology", x)
+  x <- gsub("Ophtho(mology)*", "Ophthalmology", x)
+  x <- gsub("Ortho(pedics)*", "Orthopedics", x)
+  x <- gsub("PCE.*", "PCE", x)
+  x <- gsub("purple", "Purple", x)
+  x <- gsub("Psych(iatry)*", "Psychiatry", x)
+  x <- gsub("Pulm(inology)*", "Pulminology", x)
+  x <- gsub("Pysch(iatry)*", "Psychiatry", x)
+  x <- gsub("Rad(iology)*", "Radiology", x)
+  x <- gsub("Rheum(atology)*", "Rheumatology", x)
+  x <- gsub("[Tt]ox(icology)*", "Toxicology", x)
+  x <- gsub("Uro(logy)*", "Urology", x)
+  x <- gsub("Purple", "Hospitalist Purple", x)
+  x <- gsub("Green", "Hospitalist Green", x)
+  x <- gsub("Orange", "Hospitalist Orange", x)
+
+  return(strsplit(x, "/"))
+}

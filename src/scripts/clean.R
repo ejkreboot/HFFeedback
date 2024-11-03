@@ -22,7 +22,7 @@ cleanRotations <- function(x) {
   x <- gsub("Dev.*", "Developmental Behavioral", x)
   x <- gsub("Endo(crinology)*", "Endocrinology", x)
   x <- gsub("Floor[s]*", "", x)
-  x <- gsub("Greeen", "Green", x)
+  x <- gsub("Greeen", "PHM Green", x)
   x <- gsub("Healthy/Weight", "Healthy Weight", x);
   x <- gsub(".*Hosp.*", "Senior Hospitalist", x)
   x <- gsub("/Hosp.", "", x);
@@ -39,9 +39,17 @@ cleanRotations <- function(x) {
   x <- gsub("Rheum(atology)*", "Rheumatology", x)
   x <- gsub("[Tt]ox(icology)*", "Toxicology", x)
   x <- gsub("Uro(logy)*", "Urology", x)
-  x <- gsub("Purple", "Hospitalist Purple", x)
-  x <- gsub("Green", "Hospitalist Green", x)
-  x <- gsub("Orange", "Hospitalist Orange", x)
-
+  x <- gsub("Purple", "PHM Purple", x)
+  x <- gsub("Green", "PHM Green", x)
+  x <- gsub("Orange", "PHM Orange", x)
+  x <- gsub("Night", "PHM Nights", x)
+  x <- gsub("Admit", "PHM Admitting", x)
+  x <- gsub("Float", "", x)
+  x <- gsub("Sports/Med", "Sports Medicine", x)
+  x <- gsub("Lifestyle/Med", "Lifestyle Medicine", x)
+  x <- gsub("Clinic/", "", x)
+  x <- gsub("LOA/*", "", x)
+  x <- gsub("\\dw/*", "", x)
+  
   return(strsplit(x, "/"))
 }

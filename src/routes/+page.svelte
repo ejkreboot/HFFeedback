@@ -3,7 +3,6 @@
     let errorMessage = '';
     export let data;
     async function login() {
-        console.log(code)
         const response = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

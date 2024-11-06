@@ -13,3 +13,19 @@ export async function POST() {
     }
   });
 }
+
+export async function GET() {
+  return new Response(null, {
+    status: 303,
+    headers: {
+      'Set-Cookie': serialize('session', '', {
+        httpOnly: true,
+        secure: true,
+        maxAge: 0, 
+        path: '/',
+        sameSite: 'Lax'
+      }),
+      'Location': '/'
+    }
+  });
+}

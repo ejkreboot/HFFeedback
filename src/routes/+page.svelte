@@ -1,19 +1,29 @@
 <script>
+    import { session } from '../stores/session.js';
+    let institution;
     let code = '';
     let errorMessage = '';
     export let data;
+
+    $: organization = $session; 
+
+    if(data) {
+      console.log(data);
+      session.set(data);
+    }
+
     async function login() {
         const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code }),
-        credentials: 'include' // Important to include cookies
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code }),
+          credentials: 'include' 
         });
-
         if (response.ok) {
-            errorMessage = 'You are logged in.';
+          const sessionData = await response.json();
+          session.set(sessionData);
         } else {
-            errorMessage = 'Invalid code. Please try again.';
+          errorMessage = 'Invalid code. Please try again.';
         }
     }
 
@@ -22,40 +32,89 @@
         method: 'POST',
         credentials: 'include'
         });
-
         if (response.ok) {
-        console.log('Logged out successfully');
-        // Redirect to login page or perform any other necessary actions
-        window.location.href = '/';
+          session.set(null);
+          // Redirect to login page or perform any other necessary actions
+          window.location.href = '/';
         } else {
-        console.error('Logout failed');
+          console.error('Logout failed');
         }
     }
   </script>
   
   <style>
+
+  @media (min-width: 500px) {
+
+    .mobile-only {
+      display: none;
+    }
+    
+
     .container {
-      display: flex;
+      background-image: url("hero2.webp");;
+      background-size: contain;
+      background-repeat: no-repeat;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      background-color: #f3f4f6;
+      height: clamp(550px, 60vw, 800px);
+      width: clamp(1000px, 100vw, 12000px);
+      background-color: #fbfdff;
     }
-  
+
+    #hero {
+      position: absolute;
+      top: clamp(0px, 10vh, 50px);
+      left: clamp(275px, 27.2vw , 410px);
+      width: clamp(220px, 20.3vw, 320px);
+    }
+
+    .hero-title {
+      margin: auto;
+      font-family: "Quicksand";
+      font-size: clamp(2.7rem, 4vw, 5rem);
+      font-weight: 600;
+      padding-top: 120px;
+    }
+
+    .hero-subtitle {
+      padding-top: 20px;
+      margin: auto;
+      font-family: "Quicksand";
+      font-size: clamp(0.8rem, 1.1vw, 5rem) ;
+      font-weight: 300;
+      color: #ff7f00;
+    }
+
+    .hero-sub-subtitle {
+      padding-top: 20px;
+      margin: auto;
+      font-family: "Quicksand";
+      font-size: clamp(0.8rem, 1.0vw, 5rem);
+      font-weight: 300;
+      color: #999;
+    }
+
     .login-box {
-      max-width: 400px;
-      width: 100%;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: clamp(150px, 15vw, 15vw);
+      max-height: 150px;
+      min-height: 100px;
+      margin: 20px auto 20px auto;
+      border: 1px solid black;
+      border-radius: 0px;
+      color: black;
+      font-family: Lato;
       background-color: #ffffff;
+      padding: 1.3rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       text-align: center;
     }
   
-    h1 {
-      font-size: 1.5rem;
-      color: #333;
-      margin-bottom: 1rem;
+    .message {
+      font-size: clamp(10px, 1.3vw, 24px);
+      font-weight: 300;
+      padding-bottom: 20px;
+      color: #0095f2;
     }
   
     input[type="text"] {
@@ -71,9 +130,10 @@
     button {
       width: 100%;
       padding: 0.75rem;
+      margin-bottom: 10px;
       font-size: 1rem;
       color: #fff;
-      background-color: #007bff;
+      background-color: #0095f2;
       border: none;
       border-radius: 4px;
       cursor: pointer;
@@ -87,25 +147,146 @@
       color: #e3342f;
       margin-top: 0.5rem;
     }
+
+  }
+
+  @media (max-width: 499px) {
+
+    .mobile-only {
+      display: block;
+    }
+
+    .container img {
+      width: 100%;
+    }
+    .container {
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      background-color: #fbfdff;
+    }
+
+    #hero {
+      position: relative;
+    }
+
+    .hero-title {
+      font-family: "Quicksand";
+      font-size: clamp(3rem, 4vw, 5rem);
+      font-weight: 600;
+      padding: 20px 20px 0px 20px;
+    }
+
+    .hero-subtitle {
+      padding: 20px 20px 0px 20px;
+      font-family: "Quicksand";
+      font-size: clamp(0.8rem, 1.1vw, 5rem) ;
+      font-weight: 300;
+      color: #ff7f00;
+    }
+
+    .hero-sub-subtitle {
+      padding: 20px;
+      font-family: "Quicksand";
+      font-size: clamp(0.8rem, 1.0vw, 5rem);
+      font-weight: 300;
+      color: #999;
+    }
+
+    .login-box {
+      width: 80%;
+      max-height: 150px;
+      margin: auto;
+      border: 1px solid black;
+      border-radius: 0px;
+      color: black;
+      font-family: Lato;
+      background-color: #ffffff;
+      padding: 1.3rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+  
+    .message {
+      font-size: clamp(14px, 1.3vw, 24px);
+      font-weight: 300;
+      padding-bottom: 20px;
+      color: #0095f2;
+    }
+  
+    input[type="text"] {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      box-sizing: border-box;
+    }
+  
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 10px;
+      font-size: 1rem;
+      color: #fff;
+      background-color: #0095f2;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  
+    button:hover {
+      background-color: #0056b3;
+    }
+  
+    .error-message {
+      color: #e3342f;
+      margin-top: 0.5rem;
+    }
+
+  }
+
   </style>
   
-  <button on:click={logout}>Logout</button>
   <div class="container">
-    {#if data.user}
-      Organization: {data.user.organizationName.toString()}
-    {/if}
-
-    <div class="login-box">
-      <h1>Enter Your Login Code</h1>
-      <input
-        type="text"
-        placeholder="Login Code"
-        bind:value={code}
-      />
-      <button on:click={login}>Submit</button>
-      {#if errorMessage}
-        <div class="error-message">{errorMessage}</div>
-      {/if}
+    <img alt="hero" src="./hero_mobile.webp" class="mobile-only" />
+    <div id="hero">
+      <div class="hero-title">
+        rezilliant.
+      </div>
+      <div class="hero-subtitle">
+        Painless, efficient learner feedback designed with your busy schedule in mind. 
+      </div> 
+      <div class="hero-sub-subtitle">
+        Curious? <a href="mailto:ericjkort@startmail.com">Send us an email today</a> to inquire about how we can help you and and your learners.
+      </div>
+      <div class="login-box-container">
+        <div class="login-box">
+          {#if organization?.user}
+          <div class="message">
+            You are logged is as: {JSON.stringify(organization.user.organizationName)}.
+          </div>
+          <button class="logout" on:click={logout}>Logout</button>
+          <div class="message">
+            <a href="/protected/eval">Complete Evaluations</a>
+          </div>
+          {:else}
+          <input
+            type="text"
+            placeholder="Login Code"
+            bind:value={code}
+          />
+          <button on:click={login}>Submit</button>
+          {#if errorMessage}
+            <div class="error-message">{errorMessage}</div>
+          {/if}
+          {/if}
+        </div>  
+      </div>
+  
     </div>
+
+
   </div>
   

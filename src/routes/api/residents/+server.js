@@ -7,9 +7,14 @@ export async function GET() {
         .then(response => response.text())
         .then(htmlString => {
             const dom = new JSDOM(htmlString);
-            const elements = dom.window.document.querySelectorAll('h5');
-            const res = [...elements].map(element => element.innerHTML);
-            return(JSON.stringify(res))
+            const img = dom.window.document.querySelectorAll('img');
+            const h5 = dom.window.document.querySelectorAll('h5');
+            const images = [...img].map(element => element.src);
+            const residents =  [...h5].map(element => element.innerHTML);
+            const res = residents.map((r, i) => { return({name: r, image_path: images[i+8]})});
+            const res_csv = res.reduce((a, b) => {return(a + '"' + b.name + '", ' + b.image_path + "\n")},
+            "");
+            return(res_csv);
         }));
     return(new Response(residents)); 
 }

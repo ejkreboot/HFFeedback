@@ -7,17 +7,25 @@ const secret = import.meta.env.VITE_JWT_SECRET;
 export async function handle({ event, resolve }) {
   const cookies = parse(event.request.headers.get('cookie') || '');
   const token = cookies.session;
-
+console.log("token ", token)
   if (token) {
     try {
       const user = jwt.verify(token, secret);
+      console.log("!!!!", user)
       event.locals.user = user; 
     } catch (err) {
-      console.error('Invalid session token:', err);
       event.locals.user = null;
     }
   } else {
     event.locals.user = null;
   }
+
+  if (!event.locals.user && event.url.pathname.startsWith('/protected')) {
+    return new Response(null, {
+      status: 302,
+      headers: { Location: '/' }
+    });
+  }
+
   return resolve(event);
 }

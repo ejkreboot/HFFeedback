@@ -20,8 +20,8 @@ source("./supabase.R")
 # s is master schedule in csv format
 # n is resident name key is tab delim format
 loadFromCSV <- function (s, n) {
-  sched <- read.csv2(s, sep=",");
-  names <- read.csv2(n, sep="\t");
+  sched <- read.csv2(s, sep=",", quote="\"");
+  names <- read.csv2(n, sep="\t", quote="\"");
   ix <- match(sched[,1], names[,1])
   sched[,1] <- names[ix,2]
   if(sum(is.na(ix)) > 0) {
@@ -56,7 +56,6 @@ processMatrix <- function(m) {
           row = list(
             organization = "HDVCH Peds Residency",
             resident = name,
-            pgy = pgy,
             block = block,
             role = rot
           )
@@ -82,8 +81,7 @@ colnameToBlock <- function(x) {
 
 residents <- function() {
   # httr::get("https://highflowpeds.com/hffeeeback/api/residents)
-  res <- jsonlite::fromJSON('["Farah Abu Dhais, MD","Keon Aghigh, MBBCh","Heather Becker, DO","Charlyne Cuyar Cruz, MD","Caylee Forschner, DO","Olivia Gyssler, MD","Quinn Icke, MD","Jason Lin, MD","Katelyn Liu, MD","Kevin Liu, MD","Kathryn Markham, DO","Erin Miller, MD","Riya Nag, DO","Andrea Carolina Quintero, MD","Doris Rapp, DO","Amy Saunders, DO","Christine Schafer, MD","Shivani Srikanth, DO","Abdullah Abu-Aqoulah, MD","Samuel Adams, MD","Tariq Almanaseer, MBBS","Anthony Bernicchi, MD","Meghan Berry, DO","Annalise Bowen, MD","Megan Brackmann, MD","Andrew Droste, MD","Alexis George, MD","Mary Grinstead, MD","Anna Lively, MD","Jordan Marquez, DO","Mai Phuong Nguyen Dang, DO","Mikayla Patel, MD","Liliet Pertierra, DO","Katherine Peterson, MD","Emily Rupe, MD","Ashlyn Sovereen, MD","John Stathakios, MD","Felicia White, MD","Spencer Adams, MD","Jenna Braun, MD","Caroline Buckley, MD","Maria Correa Roldan, MD","Kristen Erwin, DO","Swetha Gogu, DO","Tamara Gonzalez Copo, MD","Lyn Mattathil, MD","Julia O‘Donoghue, MD","Sejad Skokic, MD","Kaitlin Zorich, DO","Michael Kennett, MD","Geralyn Moody, MD","Ann Renner, MD","Amanda Stevens, DO"]')
-  return(res)
+
 }
 
 

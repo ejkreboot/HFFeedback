@@ -50,7 +50,7 @@
     }
     
     .container {
-      background-image: url("hero2.webp");;
+      background-image: url("/hero2.webp");;
       background-size: contain;
       background-repeat: no-repeat;
       justify-content: center;
@@ -296,7 +296,7 @@
   </style>
   
   <div class="container">
-    <img alt="hero" src="./hero_mobile.webp" class="mobile-only" />
+    <img alt="hero" src="/hero_mobile.webp" class="mobile-only" />
     <div id="hero">
       <div class="hero-title">
         rezilliant.

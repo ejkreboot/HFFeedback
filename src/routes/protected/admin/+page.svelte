@@ -29,7 +29,6 @@
         for(const key in evaluations[0]) {
           averages[key] = evaluations.reduce((a,b) => a + b[key], 0)/evaluations.length
         }
-        console.log(averages);
       }
   }
 

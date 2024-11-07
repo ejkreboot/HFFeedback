@@ -10,7 +10,6 @@ export async function handle({ event, resolve }) {
     try {
       const user = jwt.verify(token, secret);
       event.locals.user = user; 
-      console.log(user)
     } catch (err) {
       event.locals.user = null;
     }

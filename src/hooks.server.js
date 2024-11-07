@@ -3,16 +3,14 @@ import jwt from 'jsonwebtoken';
 
 const secret = import.meta.env.VITE_JWT_SECRET;
 
-/** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ event, resolve }) {
   const cookies = parse(event.request.headers.get('cookie') || '');
   const token = cookies.session;
-console.log("token ", token)
   if (token) {
     try {
       const user = jwt.verify(token, secret);
-      console.log("!!!!", user)
       event.locals.user = user; 
+      console.log(user)
     } catch (err) {
       event.locals.user = null;
     }
@@ -21,6 +19,13 @@ console.log("token ", token)
   }
 
   if (!event.locals.user && event.url.pathname.startsWith('/protected')) {
+    return new Response(null, {
+      status: 302,
+      headers: { Location: '/' }
+    });
+  }
+
+  if (!event.locals.user?.isAdmin && event.url.pathname.startsWith('/protected/admin')) {
     return new Response(null, {
       status: 302,
       headers: { Location: '/' }

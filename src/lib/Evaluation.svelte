@@ -152,141 +152,284 @@
 
 <style>
 
-  img {
-    border: 1px solid gray;
-    box-shadow:  0.3px 0.5px 0.6px hsl(0deg 0% 0% / 0.11),
-    0.7px 1.5px 1.8px -0.9px hsl(0deg 0% 0% / 0.1),
-    1.9px 3.8px 4.6px -1.9px hsl(0deg 0% 0% / 0.1),
-    4.7px 9.5px 11.4px -2.8px hsl(0deg 0% 0% / 0.09);
+  @media (min-width: 499px) {
+    img {
+      border: 1px solid gray;
+      box-shadow:  0.3px 0.5px 0.6px hsl(0deg 0% 0% / 0.11),
+      0.7px 1.5px 1.8px -0.9px hsl(0deg 0% 0% / 0.1),
+      1.9px 3.8px 4.6px -1.9px hsl(0deg 0% 0% / 0.1),
+      4.7px 9.5px 11.4px -2.8px hsl(0deg 0% 0% / 0.09);
+    }
+
+    textarea {
+      padding: 10px;
+      font-family: "Montserrat";
+      font-size: 14px;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 10px 0px 10px 0px;
+      max-width: 700px;
+      width: 700px;
+    }
+
+    .col.wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      max-width: 595px;
+    }
+
+    .eval_question_container {
+        padding-left: 5px;
+    }
+
+    .evaluation_name_container {
+      display: flex;
+      flex-flow: wrap;
+      border-top: 1px solid gray;
+      margin-top: 20px;
+      padding: 10px 0px 20px 0px;
+      width: 100%;
+      max-width: 750px;
+    }
+
+    .evaluation_name_container button {
+      margin-left: auto;
+      border: 1px solid #0095f2;
+      font-weight: 300;
+      font-size: 12px;
+      border-radius: 3px;
+      padding: 5px;
+      background: #dbecf7;
+    }
+
+    .evaluation_name {
+      color: #0095f2;
+      font-size: 24px;
+      font-weight: 300;
+      flex-grow:1
+    }
+
+    .label {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      color: gray;
+      font-weight: 300;
+      font-size: 12px;
+      padding: 0px 0px 5px 0px;
+      min-height: 30px;
+      max-height: 30px;
+      margin-top: auto;
+    }
+
+    .wide > .label {
+      padding-bottom: 10px;
+      min-height: 0px;
+    }
+
+    .wide > textarea {
+      width: 100%;
+      max-width: 700px;
+    }
+
+    .short {
+      flex: 1 1 100px;
+      max-width: 100px;
+    }
+
+    .eval_photo {
+      flex: 1 1 100px;
+      max-width: 100px;
+    }
+
+    .eval_photo > img {
+      width: 80px;
+      height: 90px;
+      overflow: hidden;
+      object-fit: cover;
+      object-position: top;
+      border-radius: 10px;
+    }
+
+    .wide {
+        flex-basis: 100%; /* Takes full width */
+        margin-top: 8px; /* Space between rows */
+    }
+
+    [data-tooltip]::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      display: block;
+      z-index: 1000;
+      max-width: 300px;
+      padding: 5px 10px;
+      background-color: #fff;
+      color: #0095f2;
+      border: 1px solid #0095f2;
+      border-radius: 4px;
+      opacity: 0; 
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      transition-delay: 0s; /* Delay before tooltip appears */
+    }
+
+    [data-tooltip]:hover::after {
+      opacity: 1; 
+      transition-delay: 0.5s; 
+    }
+
+    .message {
+      font-size: 12px;
+      font-weight: 300;
+      color: gray;
+      padding: 5px;
+    }
   }
 
-  textarea {
-    padding: 10px;
-    font-family: "Montserrat";
-    font-size: 14px;
-  }
+  @media (max-width: 499px) {
+    img {
+      border: 1px solid gray;
+      box-shadow:  0.3px 0.5px 0.6px hsl(0deg 0% 0% / 0.11),
+      0.7px 1.5px 1.8px -0.9px hsl(0deg 0% 0% / 0.1),
+      1.9px 3.8px 4.6px -1.9px hsl(0deg 0% 0% / 0.1),
+      4.7px 9.5px 11.4px -2.8px hsl(0deg 0% 0% / 0.09);
+    }
 
-  .row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 10px 0px 10px 0px;
-    max-width: 700px;
-    width: 700px;
-  }
+    textarea {
+      padding: 10px;
+      font-family: "Montserrat";
+      font-size: 14px;
+    }
 
-  .col.wrap {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    max-width: 595px;
-  }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 10px 0px 10px 0px;
+      max-width: 100%;
+    }
 
-  .eval_question_container {
-      padding-left: 5px;
-  }
+    .col.wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      max-width: 100%;
+    }
 
-  .evaluation_name_container {
-    display: flex;
-    flex-flow: wrap;
-    border-top: 1px solid gray;
-    margin-top: 20px;
-    padding: 10px 0px 20px 0px;
-    width: 100%;
-    max-width: 750px;
-  }
+    .eval_question_container {
+        padding-left: 5px;
+    }
 
-  .evaluation_name_container button {
-    margin-left: auto;
-    border: 1px solid #0095f2;
-    font-weight: 300;
-    font-size: 12px;
-    border-radius: 3px;
-    padding: 5px;
-    background: #dbecf7;
-  }
+    .evaluation_name_container {
+      display: flex;
+      flex-flow: wrap;
+      border-top: 1px solid gray;
+      margin-top: 20px;
+      padding: 10px 0px 20px 0px;
+      width: 100%;
+      justify-content: end;
+    }
 
-  .evaluation_name {
-    color: #0095f2;
-    font-size: 24px;
-    font-weight: 300;
-    flex-grow:1
-  }
+    .evaluation_name_container button {
+      margin-left: auto;
+      border: 1px solid #0095f2;
+      font-weight: 300;
+      font-size: 12px;
+      border-radius: 3px;
+      padding: 5px;
+      background: #dbecf7;
+    }
 
-  .label {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    color: gray;
-    font-weight: 300;
-    font-size: 12px;
-    padding: 0px 0px 5px 0px;
-    min-height: 30px;
-    max-height: 30px;
-    margin-top: auto;
-  }
+    .evaluation_name {
+      color: #0095f2;
+      font-size: 24px;
+      font-weight: 300;
+      flex-grow:1
+    }
 
-  .wide > .label {
-    padding-bottom: 10px;
-    min-height: 0px;
-  }
+    .label {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      color: gray;
+      font-weight: 300;
+      font-size: 12px;
+      padding: 0px 0px 5px 0px;
+      min-height: 30px;
+      max-height: 30px;
+      margin-top: auto;
+    }
 
-  .wide > textarea {
-    width: 100%;
-    max-width: 700px;
-  }
+    .wide > .label {
+      padding-bottom: 10px;
+      min-height: 0px;
+    }
 
-  .short {
-    flex: 1 1 100px;
-    max-width: 100px;
-  }
+    .wide > textarea {
+      width: 90%;
+    }
 
-  .eval_photo {
-    flex: 1 1 100px;
-    max-width: 100px;
-  }
+    .short {
+      flex: 1 1 100px;
+      max-width: 40%;
+    }
 
-  .eval_photo > img {
-    width: 80px;
-    height: 90px;
-    overflow: hidden;
-    object-fit: cover;
-    object-position: top;
-    border-radius: 10px;
-  }
+    .eval_photo {
+      flex: 1 1 100px;
+      max-width: 100px;
+    }
 
-  .wide {
-      flex-basis: 100%; /* Takes full width */
-      margin-top: 8px; /* Space between rows */
-  }
+    .eval_photo > img {
+      width: 80px;
+      height: 90px;
+      overflow: hidden;
+      object-fit: cover;
+      object-position: top;
+      border-radius: 10px;
+    }
 
-  [data-tooltip]::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    display: block;
-    z-index: 1000;
-    max-width: 300px;
-    padding: 5px 10px;
-    background-color: #fff;
-    color: #0095f2;
-    border: 1px solid #0095f2;
-    border-radius: 4px;
-    opacity: 0; 
-    pointer-events: none;
-    transition: opacity 0.5s ease;
-    transition-delay: 0s; /* Delay before tooltip appears */
-  }
+    .wide {
+        flex-basis: 100%; /* Takes full width */
+        margin-top: 8px; /* Space between rows */
+    }
 
-  [data-tooltip]:hover::after {
-    opacity: 1; 
-    transition-delay: 0.5s; 
-  }
+    [data-tooltip]::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      display: block;
+      z-index: 1000;
+      max-width: 300px;
+      padding: 5px 10px;
+      background-color: #fff;
+      color: #0095f2;
+      border: 1px solid #0095f2;
+      border-radius: 4px;
+      opacity: 0; 
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      transition-delay: 0s; /* Delay before tooltip appears */
+    }
 
-  .message {
-    font-size: 12px;
-    font-weight: 300;
-    color: gray;
-    padding: 5px;
+    [data-tooltip]:hover::after {
+      opacity: 1; 
+      transition-delay: 0.5s; 
+    }
+
+    .message {
+      font-size: 12px;
+      font-weight: 300;
+      color: gray;
+      padding: 12px;
+    }
+
+    button {
+      margin-top: 10px;
+    }
   }
 
 </style>

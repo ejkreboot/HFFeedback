@@ -1,7 +1,11 @@
 <script>
+    import { session } from '../stores/session.js';
     export let data;
-    console.log(data);
 </script>
+
+<svelte:head>
+  <link rel="icon" href="/favicon.png" />
+</svelte:head>
 
 <style>
     @media (max-width: 499px) {
@@ -77,14 +81,18 @@
 
 
 <div class="navbar">
-    <img alt="logo" src="/logo.png" height="40" width="40">
+    <img alt="logo" src="/logo.png" height="40" width="35">
     <div class="nav-title">rezilliant. <span class="nav-subtitle">residency made easier.</span></div>
-    {#if data.isLoggedIn}
-        <div class="nav-menu"><a href="./api/logout">Logout</a></div>
+    {#if data?.isLoggedIn}
+        <div class="nav-menu"><a href="/api/logout">Logout</a></div>
+        <div class="nav-menu"><a href="/protected/eval">Submit Evaluations</a></div>
+    {/if}
+    {#if data?.isAdmin}
+        <div class="nav-menu"><a href="/protected/admin">View Evaluations</a></div>
     {/if}
     <div class="nav-menu"><a href="/">Home</a></div>
 </div>
 
 <slot />
 
-<div class="footer">©2024 Eric J. Kort. All rights reserved.</div>
+<div class="footer">2024 Eric J. Kort. All rights reserved.</div>

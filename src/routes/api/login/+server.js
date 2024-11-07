@@ -13,19 +13,19 @@ export async function POST({ request, cookies }) {
 
   const { data, error } = await supabase
     .from('Organizations')
-    .select('name')
+    .select("*")
     .eq('access_code', code)
     .single();
 
   if (data) {
-    const token = jwt.sign({ organizationName: data.name }, jwtSecret, { expiresIn: '10h' });
+    const token = jwt.sign({ organizationName: data.name, isAdmin: data.is_admin  }, jwtSecret, { expiresIn: '10h' });
     cookies.set('session', token, { 
       httpOnly: true, 
       secure: true, 
       sameSite: 'strict', 
       path: '/' 
-  });
-    payload = JSON.stringify({ user: { organizationName: data.name } });
+    });
+    payload = JSON.stringify({ user: { organizationName: data.name, isAdmin: data.is_admin } });
     status = 200;
   } else {
     payload = JSON.stringify({ error: 'Invalid code' });

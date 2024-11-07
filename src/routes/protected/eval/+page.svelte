@@ -12,7 +12,6 @@
   let residents = [];
 
   const getResidents = async function() {
-    console.log(user);
     if(!selectedBlock || !selectedRole) {
       return([]);
     }
@@ -24,12 +23,10 @@
       .eq('block', selectedBlock);
 
       if (error) {
-        console.log(error);
         residents = [];
       } else {
         residents = data;
       }
-      console.log(residents);
   }
 
   $: if (selectedBlock && selectedRole) {
@@ -71,80 +68,158 @@
 </script>
 
 <style>
-  .container {
-    padding: 40px;
-  }
+   @media (min-width: 499px) {
+    .container {
+      padding: 40px;
+    }
 
-  .title {
-    font-family: Montserrat;
-    font-size: 40px;
-    padding-bottom: 10px;
-    color: Orange;
-  }
+    .title {
+      font-family: Montserrat;
+      font-size: 40px;
+      padding-bottom: 10px;
+      color: Orange;
+    }
 
-  .body {
-    line-height: 60px;
-  }
+    .body {
+      line-height: 60px;
+    }
 
-  .row {
-    display: flex;
-    flex: wrap;
-    gap: 20px;
-    padding: 10px 0px 10px 0px;
-  }
-
-  .row p {
-    padding: 5px;
-    margin: 0px;
-    line-height: 25px;
-  }
-
-  .container {
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .select {
-    max-width: 300px;
-    min-width: 300px;
-    padding: 20px;
-    font-size: 14px;
-  }
-
-  .evaluation_metrics {
-    border-top: 3px solid gray;
-    margin: 20px 0px 10px 0px;
-    padding: 10px 0px 20px 10px;
-    width: 100%;
-    max-width: 750px;
-    font-weight: 300;
-    line-height: 24px;
-    font-size: 14px;
-  }
-
-  #evaluator {
-    padding: 5px;
-    font-size: 16px;
-    border-radius: 4px;
-    border: 1px solid #bbb;
-    width: 275px;
-    margin-left: 40px;
-    margin-bottom: 30px;
-    margin-top: 15px;
-  }
-
-  .name {
-    max-width: 750px;
-    width: 100%;
-  }
-
-  .flex_form {
+    .row {
       display: flex;
-      flex-wrap: wrap;
+      flex: wrap;
       gap: 20px;
-      padding-left: 20px;
+      padding: 10px 0px 10px 0px;
+    }
+
+    .row p {
+      padding: 5px;
+      margin: 0px;
+      line-height: 25px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .select {
+      max-width: 300px;
+      min-width: 300px;
+      padding: 20px;
+      font-size: 14px;
+    }
+
+    .evaluation_metrics {
+      border-top: 3px solid gray;
+      margin: 20px 0px 10px 0px;
+      padding: 10px 0px 20px 10px;
+      width: 100%;
+      max-width: 750px;
+      font-weight: 300;
+      line-height: 24px;
+      font-size: 14px;
+    }
+
+    #evaluator {
+      padding: 5px;
+      font-size: 16px;
+      border-radius: 4px;
+      border: 1px solid #bbb;
+      width: 275px;
+      margin-left: 40px;
+      margin-bottom: 30px;
+      margin-top: 15px;
+    }
+
+    .name {
+      max-width: 750px;
+      width: 100%;
+    }
+
+    .flex_form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding-left: 20px;
+    }
   }
+
+  @media (max-width: 499px) {
+    .container {
+      padding: 5px;
+    }
+
+    .title {
+      font-family: Montserrat;
+      font-size: 40px;
+      padding-bottom: 10px;
+      color: Orange;
+    }
+
+    .body {
+      line-height: 40px;
+    }
+
+    .row {
+      display: flex;
+      flex: wrap;
+      gap: 20px;
+      padding: 10px 0px 10px 0px;
+    }
+
+    .row p {
+      padding: 5px;
+      margin: 0px;
+      line-height: 20px;
+    }
+
+    .container {
+      max-width: 100%;
+    }
+
+    .select {
+      max-width: 300px;
+      min-width: 80%;
+      padding: 5px;
+      font-size: 14px;
+    }
+
+    .evaluation_metrics {
+      border-top: 3px solid gray;
+      margin: 20px 0px 10px 0px;
+      padding: 10px 0px 20px 10px;
+      width: 100%;
+      max-width: 100%;
+      font-weight: 300;
+      line-height: 24px;
+      font-size: 14px;
+    }
+
+    #evaluator {
+      padding: 5px;
+      font-size: 16px;
+      border-radius: 4px;
+      border: 1px solid #bbb;
+      width: 245px;
+      margin-left: 22px;
+      margin-bottom: 30px;
+      margin-top: 15px;
+    }
+
+    .name {
+      max-width: 750px;
+      width: 100%;
+    }
+
+    .flex_form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding-left: 20px;
+    }
+  }
+
 </style>
 
 <div class="container">

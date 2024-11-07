@@ -8,7 +8,6 @@
     $: organization = $session; 
 
     if(data) {
-      console.log(data);
       session.set(data);
     }
 
@@ -50,7 +49,6 @@
       display: none;
     }
     
-
     .container {
       background-image: url("hero2.webp");;
       background-size: contain;
@@ -72,7 +70,7 @@
     .hero-title {
       margin: auto;
       font-family: "Quicksand";
-      font-size: clamp(2.7rem, 4vw, 5rem);
+      font-size: clamp(2rem, 2.8vw, 3vw);
       font-weight: 600;
       padding-top: 120px;
     }
@@ -97,57 +95,84 @@
 
     .login-box {
       max-width: clamp(150px, 15vw, 15vw);
+      min-width: 110%;
       max-height: 150px;
       min-height: 100px;
-      margin: 20px auto 20px auto;
+      margin: 40px auto 20px auto;
+      padding: 30px;
       border: 1px solid black;
       border-radius: 0px;
       color: black;
       font-family: Lato;
       background-color: #ffffff;
-      padding: 1.3rem;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       text-align: center;
     }
   
     .message {
-      font-size: clamp(10px, 1.3vw, 24px);
-      font-weight: 300;
+      font-size: clamp(14px, 1.3vw, 24px);
+      font-weight: 500;
       padding-bottom: 20px;
-      color: #0095f2;
+      color: black;
     }
   
     input[type="text"] {
       width: 100%;
+      background-color: #fafafa;
       padding: 0.75rem;
-      font-size: 1rem;
+      font-size: 14px;
       border: 1px solid #ccc;
       border-radius: 4px;
-      margin-bottom: 1rem;
+      margin-bottom: 8px;
       box-sizing: border-box;
     }
   
     button {
+      height: 40px;
+      font-size: 14px;
       width: 100%;
       padding: 0.75rem;
+      margin-top: 10px;
       margin-bottom: 10px;
-      font-size: 1rem;
       color: #fff;
       background-color: #0095f2;
       border: none;
       border-radius: 4px;
       cursor: pointer;
     }
-  
+
     button:hover {
       background-color: #0056b3;
     }
-  
+
+    .gray:hover {
+      background-color: #ddd;
+    }
+    
+    .gray {
+      background-color: #eee;
+      color: #666;
+    }
+
+    .narrow {
+      width: 10%;
+    }  
+
+
     .error-message {
       color: #e3342f;
       margin-top: 0.5rem;
     }
 
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .row > * {
+      flex-grow: 1
+    }
   }
 
   @media (max-width: 499px) {
@@ -159,6 +184,7 @@
     .container img {
       width: 100%;
     }
+
     .container {
       justify-content: center;
       align-items: center;
@@ -211,7 +237,7 @@
       font-size: clamp(14px, 1.3vw, 24px);
       font-weight: 300;
       padding-bottom: 20px;
-      color: #0095f2;
+      color: black;
     }
   
     input[type="text"] {
@@ -239,6 +265,26 @@
     button:hover {
       background-color: #0056b3;
     }
+
+    .gray {
+      background-color: #eee;
+      color: #666;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .row > * {
+      flex-grow: 1
+    }
+
+    .narrow {
+      width: 10%;
+    }
+
   
     .error-message {
       color: #e3342f;
@@ -265,16 +311,19 @@
         <div class="login-box">
           {#if organization?.user}
           <div class="message">
-            You are logged is as: {JSON.stringify(organization.user.organizationName)}.
+            {organization.user.organizationName}
           </div>
-          <button class="logout" on:click={logout}>Logout</button>
-          <div class="message">
-            <a href="/protected/eval">Complete Evaluations</a>
+          <div class="row">
+            <button class="narrow" on:click={document.location='/protected/eval'}>Enter Portal</button>
+            <button class="narrow gray" on:click={logout}>Logout</button>
           </div>
           {:else}
+          <div class="message">
+            Log in to your account
+          </div>
           <input
             type="text"
-            placeholder="Login Code"
+            placeholder="Access Code"
             bind:value={code}
           />
           <button on:click={login}>Submit</button>

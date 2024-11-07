@@ -44,6 +44,12 @@
   
   <style>
 
+  .sms-notification {
+    color: black;
+    font-size: 11px;
+    font-weight: 300;
+  }
+
   @media (min-width: 500px) {
 
     .mobile-only {

@@ -263,13 +263,14 @@
 
     [data-tooltip]::after {
       content: attr(data-tooltip);
+      font-size: 14px;
       position: absolute;
       display: block;
       z-index: 1000;
       max-width: 300px;
       padding: 5px 10px;
       background-color: #fff;
-      color: #0095f2;
+      color: #000;
       border: 1px solid #0095f2;
       border-radius: 4px;
       opacity: 0; 
@@ -464,7 +465,7 @@
             History & Physical
           </div> 
         {/if}
-        <Svelecte options={[1,2,3,4]} bind:value={history_and_physical} />
+        <Svelecte options={[1,2,3,4,5]} bind:value={history_and_physical} />
       </div>
       <div class="eval_question short">
         {#if pgy == 1}
@@ -479,7 +480,7 @@
             Case Presentation
           </div> 
         {/if}
-        <Svelecte class="select"  options={[1,2,3,4]} bind:value={case_presentation} />
+        <Svelecte class="select"  options={[1,2,3,4,5]} bind:value={case_presentation} />
       </div>
       <div class="eval_question short">
         {#if pgy == 1}
@@ -495,7 +496,7 @@
           ManagementPlan & Execution
         </div>
         {/if}
-        <Svelecte class="select"  options={[1,2,3,4]} bind:value={management_plan} />
+        <Svelecte class="select"  options={[1,2,3,4,5]} bind:value={management_plan} />
       </div>
       <div class="eval_question short">
         <div class="label" data-tooltip="Effective, sensitive, and respectful communication skills, langauge appropriate to
@@ -503,14 +504,14 @@
         making.">
           Patient/Family Communication
         </div> 
-        <Svelecte class="select"  options={[1,2,3,4]} bind:value={patient_communication} />
+        <Svelecte class="select"  options={[1,2,3,4,5]} bind:value={patient_communication} />
       </div>
       <div class="eval_question short">
         <div class="label" data-tooltip="Efficient, succinct, timely, and includes rationale behind medical decision
         making.">
           Documentation
         </div>
-        <Svelecte class="select"  options={[1,2,3,4]} bind:value={documentation} />
+        <Svelecte class="select"  options={[1,2,3,4,5]} bind:value={documentation} />
       </div>
       <div class="eval_question short">
         {#if pgy == 1}
@@ -526,21 +527,21 @@
             Professionalism / Collaboration
           </div>
         {/if}
-        <Svelecte class="select"  options={[1,2,3,4]} bind:value={professionalism} />
+        <Svelecte class="select"  options={[1,2,3,4,5]} bind:value={professionalism} />
       </div>
       <div class="eval_question short">
         <div class="label" data-tooltip="Demonstrates situational awareness, shows self-motivation to go above 
         and beyond the minimum expectations of the rotation.">
           Leadership / Motivation
         </div>
-        <Svelecte class="select"  options={[1,2,3,4]} bind:value={leadership} />
+        <Svelecte class="select"  options={[1,2,3,4,5]} bind:value={leadership} />
       </div>
       <div class="eval_question short">
         <div class="label" data-tooltip="Makes appropriate consultations, able to formulate relevant questions 
         for consultants, appropriate post-referral follow up.">
           Consultation
         </div>
-        <Svelecte class="select"  options={[1,2,3,4]} bind:value={consultation} />
+        <Svelecte class="select"  options={[1,2,3,4,5]} bind:value={consultation} />
       </div>
       <div class="eval_question short">
         <div class="label" data-tooltip="Discusses risks/benefits of procedures in language easilt understood 
@@ -548,7 +549,7 @@
         skills.">
           Procedural skills
         </div>
-        <Svelecte class="select"  options={[1,2,3,4]} bind:value={procedures} />
+        <Svelecte class="select"  options={[1,2,3,4,5]} bind:value={procedures} />
       </div>
       <div class="eval_question wide">
         <div class="label"><b>Please comment on at least 1 strength and growth opportunity, and the rationale behind your

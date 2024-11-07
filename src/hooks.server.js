@@ -16,15 +16,19 @@ export async function handle({ event, resolve }) {
   } else {
     event.locals.user = null;
   }
-
-  if (!event.locals.user && event.url.pathname.startsWith('/protected')) {
+console.log(event.url, event.locals);
+  if (!event.locals.user && 
+      (event.url.pathname.startsWith('/protected') ||
+      event.url.pathname.startsWith('/api/protected'))) {
     return new Response(null, {
       status: 302,
       headers: { Location: '/' }
     });
   }
 
-  if (!event.locals.user?.isAdmin && event.url.pathname.startsWith('/protected/admin')) {
+  if (!event.locals.user?.isAdmin && 
+    (event.url.pathname.startsWith('/protected/admin') || 
+     event.url.pathname.startsWith('/api/protected/admin'))) {
     return new Response(null, {
       status: 302,
       headers: { Location: '/' }

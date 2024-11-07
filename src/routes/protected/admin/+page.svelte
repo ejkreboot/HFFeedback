@@ -10,22 +10,22 @@
   let evaluations = [];
   let residents = [];
   let averages = {};
+
   const getEvaluations = async function() {
     if(!selectedBlock || !selectedResident) {
       return([]);
     }
-
-    const { data, error } = await supabase
-      .from('Evaluations')
-      .select("*")
-      .eq('institution', user.organizationName, )
-      .eq('resident_name', selectedResident)
-      .eq('block', selectedBlock);
-
-      if (error) {
-        evaluations = [];
+    const response = await fetch(`/api/protected/admin?resident_name=${encodeURIComponent(selectedResident)}&block=${encodeURIComponent(selectedBlock)}`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log(errorData);
       } else {
-        evaluations = data;
+        // Extract the data from the response
+        data = await response.json();
+      }
+
+      evaluations = data.evaluations;
+      if(data.evaluations.length > 0) {
         for(const key in evaluations[0]) {
           averages[key] = evaluations.reduce((a,b) => a + b[key], 0)/evaluations.length
         }
@@ -172,6 +172,12 @@
       gap: 20px;
       padding-left: 20px;
   }
+
+  .noresults {
+    padding-top: 20px;
+    color: #0095f2;
+  }
+
 </style>
 
 <div class="container">
@@ -293,7 +299,11 @@
   <div class="body section">
     Individual evaluations
   </div>
-  {/if}
+  {:else}
+  <div class="noresults">
+  No evaluations have been completed for that resident and block yet.
+  </div>
+{/if}
 
   {#each evaluations as evaluation}
   <div class="evaluation_container">

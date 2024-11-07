@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { supabase } from '$lib/supabase'; // adjust path as necessary
+  import { supabase } from '$lib/supabase';
   import Svelecte from 'svelecte';
   import Evaluation from '$lib/Evaluation.svelte';
 

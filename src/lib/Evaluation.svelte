@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import { supabase } from '$lib/supabase'; // adjust path as necessary
+    import { supabase } from '$lib/supabase'; 
     import Svelecte from 'svelecte';
     export let subject, 
                role, 
@@ -37,42 +37,48 @@
         }
 
     const getEvaluation = async function() {
-      const { data, error } = await supabase
-        .from('Evaluations')
-        .select('*')
-        .eq('evaluator', evaluator )
-        .eq('resident_name', subject)
-        .eq('block', block)
-        .eq('rotation', role);
-        if(data[0]) {
-          ({case_presentation, 
-            comments, 
-            documentation, 
-            history_and_physical, 
-            management_plan, 
-            patient_communication,
-            professionalism,
-            leadership,
-            consultation,
-            procedures
-           } = data[0]);
+      let data;
 
-          initialData = { ...data[0] };
+      const response = await fetch(`/api/protected/evaluations?evaluator=${encodeURIComponent(evaluator)}&resident_name=${encodeURIComponent(subject)}`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log(errorData);
+      } else {
+        // Extract the data from the response
+        data = await response.json();
+      }
 
-        } else {
-          initialData = {
-            case_presentation: null,
-            comments: null,
-            documentation: null,
-            history_and_physical: null,
-            management_plan: null,
-            patient_communication: null,
-            professionalism: null,
-            leadership: null,
-            consultation: null,
-            procedures: null
-          }
+      data = data?.evaluation
+
+      if(data[0]) {
+        ({case_presentation, 
+          comments, 
+          documentation, 
+          history_and_physical, 
+          management_plan, 
+          patient_communication,
+          professionalism,
+          leadership,
+          consultation,
+          procedures
+          } = data[0]);
+
+        initialData = { ...data[0] };
+
+      } else {
+        initialData = {
+          case_presentation: null,
+          comments: null,
+          documentation: null,
+          history_and_physical: null,
+          management_plan: null,
+          patient_communication: null,
+          professionalism: null,
+          leadership: null,
+          consultation: null,
+          procedures: null
         }
+      }
     }
 
     $: if (evaluator) {
@@ -139,15 +145,22 @@
           comments: comments
         };
 
-        const { error } = await supabase.from('Evaluations').insert([record]);
-        if (error) {
-          console.error('Error saving evaluation:', error);
-          message = 'An error occurred while saving the evaluation.';
-        } else {
+        const response = await fetch('/api/protected/evaluations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+          body: JSON.stringify(record)
+        });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log(errorData)
+      } else {
           message = '<span style="color: green;">Evaluation saved. Thank you!</span>';
-        }
-      });
+      }
     });
+  })
 </script>
 
 <style>

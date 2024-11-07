@@ -6,8 +6,21 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const jwtSecret = import.meta.env.VITE_JWT_SECRET;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+async function sendOtp(phoneOrEmail) {
+  const { response, error } = await supabase.auth.signInWithOtp({
+    phone: phoneOrEmail, // or use { email: phoneOrEmail } for email OTP
+  });
+  if (error) {
+    console.log(error)
+  } else {
+    console.log(response);
+  }
+}
+
 export async function POST({ request, cookies }) {
   let payload, status;
+
+  await sendOtp("+16164908006")
 
   const { code } = await request.json();
 

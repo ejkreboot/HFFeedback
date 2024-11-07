@@ -2,6 +2,7 @@
     import { session } from '../stores/session.js';
     let institution;
     let code = '';
+    let phone = '';
     let errorMessage = '';
     export let data;
 
@@ -96,7 +97,7 @@
     .login-box {
       max-width: clamp(150px, 15vw, 15vw);
       min-width: 110%;
-      max-height: 150px;
+      max-height: 170px;
       min-height: 100px;
       margin: 40px auto 20px auto;
       padding: 30px;
@@ -319,13 +320,14 @@
           </div>
           {:else}
           <div class="message">
-            Log in to your account
+            To Log In, Enter Phone #:
           </div>
           <input
             type="text"
-            placeholder="Access Code"
-            bind:value={code}
+            placeholder="123-456-7890"
+            bind:value={phone}
           />
+          <div class="sms-notification">(By clicking submit, user agrees to receiving text messages from Rezilliant. Carrier rates may apply.)</div>
           <button on:click={login}>Submit</button>
           {#if errorMessage}
             <div class="error-message">{errorMessage}</div>

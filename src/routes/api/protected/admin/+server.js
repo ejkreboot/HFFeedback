@@ -3,8 +3,6 @@ import { createClient } from '@supabase/supabase-js';
 const supabase_url = import.meta.env.VITE_SUPABASE_URL
 const supabase_service_role_key = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY
 
-console.log(supabase_url)
-
 const supabase = createClient(supabase_url, supabase_service_role_key);
 
 export async function GET(event) {

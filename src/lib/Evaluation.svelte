@@ -42,7 +42,6 @@
       const response = await fetch(`/api/protected/evaluations?evaluator=${encodeURIComponent(evaluator)}&resident_name=${encodeURIComponent(subject)}`);
       if (!response.ok) {
         const errorData = await response.json();
-        console.log(errorData);
       } else {
         // Extract the data from the response
         data = await response.json();
@@ -155,7 +154,6 @@
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.log(errorData)
       } else {
           message = '<span style="color: green;">Evaluation saved. Thank you!</span>';
       }

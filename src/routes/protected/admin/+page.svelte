@@ -18,7 +18,6 @@
     const response = await fetch(`/api/protected/admin?resident_name=${encodeURIComponent(selectedResident)}&block=${encodeURIComponent(selectedBlock)}`);
       if (!response.ok) {
         const errorData = await response.json();
-        console.log(errorData);
       } else {
         // Extract the data from the response
         data = await response.json();

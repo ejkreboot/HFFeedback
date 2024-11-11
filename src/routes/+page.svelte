@@ -75,7 +75,7 @@
       background-repeat: no-repeat;
       justify-content: center;
       align-items: center;
-      height: clamp(620px, 60vw, 800px);
+      height: clamp(720px, 60vw, 800px);
       width: clamp(1000px, 100vw, 12000px);
       background-color: #fbfdff;
     }
@@ -84,13 +84,13 @@
       position: absolute;
       top: clamp(0px, 10vh, 50px);
       left: clamp(150px, 18vw , 410px);
-      width: clamp(300px, 22vw, 350px);
+      width: clamp(300px, 23vw, 400px);
     }
 
     .hero-title {
       margin: auto;
       font-family: "Quicksand";
-      font-size: clamp(3rem, 3.6vw, 4vw);
+      font-size: clamp(2.2rem, 3vw, 3vw);
       font-weight: 600;
       padding-top: 120px;
     }
@@ -338,11 +338,11 @@
     <img alt="hero" src="/hero_mobile.webp" class="mobile-only" />
     <div id="hero">
       <div class="hero-title">
-        be rezilliant.
+        Fast-track your feedback.
       </div>
       <div class="hero-subtitle">
         <p>
-          Painless, efficient learner feedback designed with your busy schedule in mind. 
+          Rezziliant enables painless, efficient learner feedback designed with your busy schedule in mind. 
         </p>
         <p>
           Curious? <a href="mailto:ericjkort@startmail.com">Send us an email today</a> to inquire about how we can help you and and your learners.

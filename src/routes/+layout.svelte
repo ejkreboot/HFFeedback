@@ -168,7 +168,7 @@
 
 <div class="navbar">
     <img alt="logo" src="/logo.png" height="35" width="32">
-    <div class="nav-title">rezilliant. <span class="nav-subtitle">residency made easier.</span></div>
+    <div class="nav-title">rezziliant. <span class="nav-subtitle">residency made easier.</span></div>
 
     <!-- Mobile nav menu -->
     <nav>

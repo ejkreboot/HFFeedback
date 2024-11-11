@@ -69,6 +69,10 @@
 </script>
 
 <style>
+  :global(.sv-dropdown-scroll) {
+    cursor: default;
+  }
+
    @media (min-width: 499px) {
     .container {
       padding: 0px 40px 40px 40px;

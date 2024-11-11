@@ -3,9 +3,8 @@
   import { supabase } from '$lib/supabase';
   import Svelecte from 'svelecte';
   import Evaluation from '$lib/Evaluation.svelte';
+  import { session } from '$stores/session.js';
 
-  export let data;
-  const user = data.user;
   let selectedBlock, selectedRole, evaluatorName;
   let roles = [];
   let blocks = [];
@@ -15,17 +14,17 @@
     if(!selectedBlock || !selectedRole) {
       return([]);
     }
-    const { data, error } = await supabase
+    const { data: rows, error } = await supabase
       .from('masterschedulewithpgy')
       .select('resident, pgy')
-      .eq("organization", user.organizationName, )
+      .eq("organization", $session.institution, )
       .eq('role', selectedRole)
       .eq('block', selectedBlock);
 
       if (error) {
         residents = [];
       } else {
-        residents = data;
+        residents = rows;
       }
   }
 
@@ -35,6 +34,7 @@
 
   // Fetch sorted, unique roles and blocks
     onMount(async () => {
+
       let res;
       const blockSort = function(a, b) {
       const a_n = parseInt(a.replace(/.*?([0-9]{1,2}).*/g, "$1"));
@@ -61,6 +61,7 @@
 
     if (roleError) console.error("Error fetching roles:", roleError);
     else roles = roleData.map(item => item.role);
+    roles = roles.filter(item => $session.roles.some(role => item.startsWith(role)));
 
     if (blockError) console.error("Error fetching blocks:", blockError);
     else blocks = blockData.map(item => item.block).sort(blockSort);
@@ -70,14 +71,7 @@
 <style>
    @media (min-width: 499px) {
     .container {
-      padding: 40px;
-    }
-
-    .title {
-      font-family: Montserrat;
-      font-size: 40px;
-      padding-bottom: 10px;
-      color: Orange;
+      padding: 0px 40px 40px 40px;
     }
 
     .body {
@@ -121,22 +115,6 @@
       font-size: 14px;
     }
 
-    #evaluator {
-      padding: 5px;
-      font-size: 16px;
-      border-radius: 4px;
-      border: 1px solid #bbb;
-      width: 275px;
-      margin-left: 40px;
-      margin-bottom: 30px;
-      margin-top: 15px;
-    }
-
-    .name {
-      max-width: 750px;
-      width: 100%;
-    }
-
     .flex_form {
         display: flex;
         flex-wrap: wrap;
@@ -148,13 +126,6 @@
   @media (max-width: 499px) {
     .container {
       padding: 5px;
-    }
-
-    .title {
-      font-family: Montserrat;
-      font-size: 40px;
-      padding-bottom: 10px;
-      color: Orange;
     }
 
     .body {
@@ -196,22 +167,6 @@
       font-size: 14px;
     }
 
-    #evaluator {
-      padding: 5px;
-      font-size: 16px;
-      border-radius: 4px;
-      border: 1px solid #bbb;
-      width: 245px;
-      margin-left: 22px;
-      margin-bottom: 30px;
-      margin-top: 15px;
-    }
-
-    .name {
-      max-width: 750px;
-      width: 100%;
-    }
-
     .flex_form {
         display: flex;
         flex-wrap: wrap;
@@ -223,11 +178,11 @@
 </style>
 
 <div class="container">
-  <div class="title">
+  <h2>
     Complete evaluations
-  </div>
+  </h2>
   <div class="body">
-    To begin, select a rotation and schedule block.
+    Evaluator: <b> { $session.name } </b>. To begin, select a rotation and schedule block.
   </div>
   <form class="flex_form">
     <div class="select">
@@ -244,14 +199,6 @@
                 bind:value={selectedBlock} />
     </div>  
   </form>
-  <div class="body">
-    And please enter your name:
-  </div>
-
-  <div class="name">
-    <input id="evaluator" placeholder="Your Name" required bind:value={evaluatorName}/>
-  </div>
-
 
   <div class="evaluation_metrics">
     Please provide your assessment based on <b>your direct observation</b> of the resident's <b>progress</b> towards being able
@@ -273,10 +220,10 @@
 
   {#each residents as resident (resident.resident)}
   <Evaluation 
-    institution={user.organizationName}
+    institution={$session.institution}
     role={selectedRole}
     block={selectedBlock}
-    evaluator={evaluatorName} 
+    evaluator={$session.name} 
     subject={resident.resident} 
     pgy={resident.pgy}
   />

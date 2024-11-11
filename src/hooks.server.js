@@ -8,15 +8,14 @@ export async function handle({ event, resolve }) {
   const token = cookies.session;
   if (token) {
     try {
-      const user = jwt.verify(token, secret);
-      event.locals.user = user; 
+      const user = jwt.verify(token, secret); 
+      event.locals.user = { ...user.user }; 
     } catch (err) {
       event.locals.user = null;
     }
   } else {
     event.locals.user = null;
   }
-console.log(event.url, event.locals);
   if (!event.locals.user && 
       (event.url.pathname.startsWith('/protected') ||
       event.url.pathname.startsWith('/api/protected'))) {
@@ -26,7 +25,7 @@ console.log(event.url, event.locals);
     });
   }
 
-  if (!event.locals.user?.isAdmin && 
+  if (!event.locals.user?.isadmin && 
     (event.url.pathname.startsWith('/protected/admin') || 
      event.url.pathname.startsWith('/api/protected/admin'))) {
     return new Response(null, {

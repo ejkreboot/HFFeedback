@@ -38,8 +38,8 @@
 
     const getEvaluation = async function() {
       let data;
-
       const response = await fetch(`/api/protected/evaluations?evaluator=${encodeURIComponent(evaluator)}&resident_name=${encodeURIComponent(subject)}`);
+
       if (!response.ok) {
         const errorData = await response.json();
       } else {
@@ -49,7 +49,7 @@
 
       data = data?.evaluation
 
-      if(data[0]) {
+      if(data && data[0]) {
         ({case_presentation, 
           comments, 
           documentation, 

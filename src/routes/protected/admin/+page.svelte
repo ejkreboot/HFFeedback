@@ -2,15 +2,15 @@
   import { onMount } from 'svelte';
   import { supabase } from '$lib/supabase';
   import Svelecte from 'svelecte';
+  import { session } from '$stores/session.js';
 
-  export let data;
-  const user = data.user;
   let selectedBlock, selectedResident;
   let blocks = [];
   let evaluations = [];
   let residents = [];
   let averages = {};
-
+  let data; 
+  
   const getEvaluations = async function() {
     if(!selectedBlock || !selectedResident) {
       return([]);
@@ -24,7 +24,7 @@
       }
 
       evaluations = data.evaluations;
-      if(data.evaluations.length > 0) {
+      if(evaluations?.length > 0) {
         for(const key in evaluations[0]) {
           averages[key] = evaluations.reduce((a,b) => a + b[key], 0)/evaluations.length
         }
@@ -131,7 +131,7 @@
   }
 
   .container {
-    padding: 40px;
+    padding: 0px 40px 40px 40px;
   }
 
   .title {
@@ -180,9 +180,9 @@
 </style>
 
 <div class="container">
-  <div class="title">
+  <h2>
     View evaluations
-  </div>
+  </h2>
   <div class="body">
     To begin, select a resident and schedule block.
   </div>

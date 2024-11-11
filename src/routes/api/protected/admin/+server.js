@@ -6,9 +6,8 @@ const supabase_service_role_key = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY
 const supabase = createClient(supabase_url, supabase_service_role_key);
 
 export async function GET(event) {
-    const organizationName = event.locals.user?.organizationName;
-  
-    if (!organizationName || !event.locals.user.isAdmin) {
+    const institution = event.locals.user?.institution;
+    if (!institution || !event.locals.user.isadmin) {
       return new Response(JSON.stringify({ message: 'Unauthorized,' }), {
         status: 401,
         headers: { 'Content-Type': 'application/json' }
@@ -28,7 +27,7 @@ export async function GET(event) {
     const { data, error } = await supabase
       .from('Evaluations')
       .select('*')
-      .eq('institution', organizationName)
+      .eq('institution', institution)
       .eq('resident_name', resident_name)
       .eq('block', block); // Include block in the query criteria
   

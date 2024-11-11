@@ -1,45 +1,58 @@
 <script>
+    import { onMount } from 'svelte';
+    import { supabase } from "$lib/supabase.js";
     import { session } from '../stores/session.js';
-    let institution;
+
     let code = '';
-    let phone = '';
+    let phoneOrEmail = '';
     let errorMessage = '';
-    export let data;
 
-    $: organization = $session; 
+    let loading = false;
+    
+    async function login() {
+      loading = true;
+      const { response, error } = await supabase.auth.signInWithOtp({
+        email: phoneOrEmail,
+        options: {
+          shouldCreateUser: false,         
+        },
+      });
+      loading = false;
 
-    if(data) {
+      if (error) {
+        errorMessage = "Email / Phone not recognized."
+        document.getElementById("login").style.display="block";
+        document.getElementById("otp").style.display="none";
+      } else {
+        document.getElementById("login").style.display="none";
+        document.getElementById("otp").style.display="block";
+      }
+    }
+
+    async function verify() {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: code, phoneOrEmail })
+      });
+      const data = await response.json();
       session.set(data);
     }
 
-    async function login() {
-        const response = await fetch('/api/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code }),
-          credentials: 'include' 
-        });
-        if (response.ok) {
-          const sessionData = await response.json();
-          session.set(sessionData);
-        } else {
-          errorMessage = 'Invalid code. Please try again.';
-        }
+    async function logout() {
+      const { error } = await supabase.auth.signOut();
+      if(error) {
+        console.error('Logout failed');
+      }
+      await fetch('/api/auth/logout'); 
+      session.set({});
     }
 
-    async function logout() {
-        const response = await fetch('/api/logout', {
-        method: 'POST',
-        credentials: 'include'
-        });
-        if (response.ok) {
-          session.set(null);
-          // Redirect to login page or perform any other necessary actions
-          window.location.href = '/';
-        } else {
-          console.error('Logout failed');
-        }
-    }
+    onMount(async () => 
+    {
+
+    })
+
   </script>
   
   <style>
@@ -62,7 +75,7 @@
       background-repeat: no-repeat;
       justify-content: center;
       align-items: center;
-      height: clamp(550px, 60vw, 800px);
+      height: clamp(620px, 60vw, 800px);
       width: clamp(1000px, 100vw, 12000px);
       background-color: #fbfdff;
     }
@@ -70,54 +83,62 @@
     #hero {
       position: absolute;
       top: clamp(0px, 10vh, 50px);
-      left: clamp(275px, 27.2vw , 410px);
-      width: clamp(220px, 20.3vw, 320px);
+      left: clamp(150px, 18vw , 410px);
+      width: clamp(300px, 22vw, 350px);
     }
 
     .hero-title {
       margin: auto;
       font-family: "Quicksand";
-      font-size: clamp(2rem, 2.8vw, 3vw);
+      font-size: clamp(3rem, 3.6vw, 4vw);
       font-weight: 600;
       padding-top: 120px;
     }
 
     .hero-subtitle {
-      padding-top: 20px;
+      padding-top: 10px;
+      padding-bottom: 10px;
       margin: auto;
       font-family: "Quicksand";
-      font-size: clamp(0.8rem, 1.1vw, 5rem) ;
+      font-size: clamp(0.9rem, 1vw, 5rem);
       font-weight: 300;
-      color: #ff7f00;
-    }
-
-    .hero-sub-subtitle {
-      padding-top: 20px;
-      margin: auto;
-      font-family: "Quicksand";
-      font-size: clamp(0.8rem, 1.0vw, 5rem);
-      font-weight: 300;
+      line-height: 1.5rem;
       color: #999;
     }
 
-    .login-box {
-      max-width: clamp(150px, 15vw, 15vw);
-      min-width: 110%;
-      max-height: 170px;
-      min-height: 100px;
-      margin: 40px auto 20px auto;
-      padding: 30px;
-      border: 1px solid black;
-      border-radius: 0px;
-      color: black;
-      font-family: Lato;
-      background-color: #ffffff;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      text-align: center;
+    .form-box {
+      border: 1px solid gray;
+      border-radius: 5px;
+      padding: 20px 35px 20px 35px;
+      width: 300px;
+      margin: 20px 0px 20px 0px;
+      background-color: white;
+          box-shadow:  0.3px 0.5px 0.6px hsl(0deg 0% 0% / 0.11),
+          0.7px 1.5px 1.8px -0.9px hsl(0deg 0% 0% / 0.1),
+          1.9px 3.8px 4.6px -1.9px hsl(0deg 0% 0% / 0.1),
+          4.7px 9.5px 11.4px -2.8px hsl(0deg 0% 0% / 0.09);
     }
-  
+
+    .form-title {
+      text-align: center;
+      padding-bottom: 20px;
+      font-size: 24px;
+      font-weight: 300;
+    }
+
+    .form-label {
+      font-size: 14px;
+      color: gray;
+      padding-bottom: 5px;
+    }
+
+    .sms-notification {
+      font-size: 9pt;
+      margin-top: -5px;
+    }
+
     .message {
-      font-size: clamp(14px, 1.3vw, 24px);
+      font-size: clamp(14px, 1.1vw, 24px);
       font-weight: 500;
       padding-bottom: 20px;
       color: black;
@@ -135,12 +156,11 @@
     }
   
     button {
+      margin: 20px 0px 20px 0px;
       height: 40px;
       font-size: 14px;
       width: 100%;
       padding: 0.75rem;
-      margin-top: 10px;
-      margin-bottom: 10px;
       color: #fff;
       background-color: #0095f2;
       border: none;
@@ -165,10 +185,10 @@
       width: 10%;
     }  
 
-
     .error-message {
-      color: #e3342f;
-      margin-top: 0.5rem;
+      color: #ff7f00;
+      font-weight: 300;
+      margin-top: 0.2rem;
     }
 
     .row {
@@ -182,7 +202,7 @@
     }
   }
 
-  @media (max-width: 499px) {
+  @media (max-width: 500px) {
 
     .mobile-only {
       display: block;
@@ -213,33 +233,44 @@
     .hero-subtitle {
       padding: 20px 20px 0px 20px;
       font-family: "Quicksand";
-      font-size: clamp(0.8rem, 1.1vw, 5rem) ;
-      font-weight: 300;
-      color: #ff7f00;
-    }
-
-    .hero-sub-subtitle {
-      padding: 20px;
-      font-family: "Quicksand";
-      font-size: clamp(0.8rem, 1.0vw, 5rem);
+      font-size: clamp(1rem, 1.1vw, 5rem) ;
       font-weight: 300;
       color: #999;
     }
-
-    .login-box {
-      width: 80%;
-      max-height: 150px;
-      margin: auto;
-      border: 1px solid black;
-      border-radius: 0px;
-      color: black;
-      font-family: Lato;
-      background-color: #ffffff;
-      padding: 1.3rem;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      text-align: center;
-    }
   
+    .form-box {
+      border: 1px solid gray;
+      border-radius: 5px;
+      padding: 20px 35px 20px 35px;
+      width: 90%;
+      box-sizing:border-box;
+      margin: 10px 5% 10px 5%;
+      background-color: white;
+          box-shadow:  0.3px 0.5px 0.6px hsl(0deg 0% 0% / 0.11),
+          0.7px 1.5px 1.8px -0.9px hsl(0deg 0% 0% / 0.1),
+          1.9px 3.8px 4.6px -1.9px hsl(0deg 0% 0% / 0.1),
+          4.7px 9.5px 11.4px -2.8px hsl(0deg 0% 0% / 0.09);
+    }
+
+    .form-title {
+      text-align: center;
+      padding-bottom: 20px;
+      font-size: 24px;
+      font-weight: 300;
+    }
+
+    .form-label {
+      font-size: 14px;
+      color: gray;
+      padding-bottom: 5px;
+    }
+
+    .sms-notification {
+      font-size: 9pt;
+      margin-top: -15px;
+      padding-bottom: 20px;
+    }
+
     .message {
       font-size: clamp(14px, 1.3vw, 24px);
       font-weight: 300;
@@ -294,7 +325,8 @@
 
   
     .error-message {
-      color: #e3342f;
+      color: #ff7f00;
+      font-weight: 300;
       margin-top: 0.5rem;
     }
 
@@ -302,39 +334,56 @@
 
   </style>
   
-  <div class="container">
+  <div class="container" style='cursor: {loading? "wait" : "default"};'>
     <img alt="hero" src="/hero_mobile.webp" class="mobile-only" />
     <div id="hero">
       <div class="hero-title">
-        rezilliant.
+        be rezilliant.
       </div>
       <div class="hero-subtitle">
-        Painless, efficient learner feedback designed with your busy schedule in mind. 
-      </div> 
-      <div class="hero-sub-subtitle">
-        Curious? <a href="mailto:ericjkort@startmail.com">Send us an email today</a> to inquire about how we can help you and and your learners.
+        <p>
+          Painless, efficient learner feedback designed with your busy schedule in mind. 
+        </p>
+        <p>
+          Curious? <a href="mailto:ericjkort@startmail.com">Send us an email today</a> to inquire about how we can help you and and your learners.
+        </p>
       </div>
       <div class="login-box-container">
-        <div class="login-box">
-          {#if organization?.user}
+        <div class="form-box">
+          {#if $session?.email}
           <div class="message">
-            {organization.user.organizationName}
+            <br>Logged in as: <b>{$session.name}</b>
           </div>
           <div class="row">
             <button class="narrow" on:click={document.location='/protected/eval'}>Enter Portal</button>
             <button class="narrow gray" on:click={logout}>Logout</button>
           </div>
           {:else}
-          <div class="message">
-            To Log In, Enter Phone #:
+          <div id="login">
+            <div class="form-title">
+              Sign In
+            </div>
+          <div class="form-label">
+            Phone or email
           </div>
-          <input
-            type="text"
-            placeholder="123-456-7890"
-            bind:value={phone}
-          />
-          <div class="sms-notification">(By clicking submit, user agrees to receiving text messages from Rezilliant. Carrier rates may apply.)</div>
-          <button on:click={login}>Submit</button>
+            <input
+              type="text"
+              bind:value={phoneOrEmail}
+            />
+            <div class="sms-notification">(For phone based sign in, carrier rates may apply.)</div>
+            <button style='cursor: {loading? "wait" : "default"} !important;' on:click={login}>Submit</button>
+          </div>
+          <div id="otp" style="display: none;">
+            <div class="message">
+              Enter code sent to phone/email:
+            </div>
+            <input
+              type="text"
+              placeholder="000000"
+              bind:value={code}
+            />
+            <button on:click={verify}>Submit</button>            
+          </div>
           {#if errorMessage}
             <div class="error-message">{errorMessage}</div>
           {/if}

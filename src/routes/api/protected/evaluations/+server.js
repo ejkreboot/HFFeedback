@@ -6,9 +6,8 @@ const supabase_service_role_key = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY
 const supabase = createClient(supabase_url, supabase_service_role_key);
 
 export async function GET(event) {
-  const institutionName = event.locals.user?.organizationName;
-
-  if (!institutionName) {
+  const institution = event.locals.user?.institution;
+  if (!institution) {
     return new Response(JSON.stringify({ message: 'Unauthorized: Missing institution name' }), {
       status: 401,
       headers: { 'Content-Type': 'application/json' }
@@ -28,7 +27,7 @@ export async function GET(event) {
   const { data, error } = await supabase
     .from('Evaluations')
     .select('*')
-    .eq('institution', institutionName)
+    .eq('institution', institution)
     .eq('evaluator', evaluator)
     .eq('resident_name', resident_name);
 
@@ -46,9 +45,9 @@ export async function GET(event) {
 }
 
 export async function POST(event) {
-  const organizationName = event.locals.user?.organizationName;
+  const institution = event.locals.user?.institution;
 
-  if (!organizationName) {
+  if (!institution) {
     return new Response(JSON.stringify({ message: 'Unauthorized: Missing organization name' }), {
       status: 401,
       headers: { 'Content-Type': 'application/json' }
@@ -59,12 +58,12 @@ export async function POST(event) {
 
   const evaluationData = {
     ...body,
-    institution: organizationName
+    institution: institution
   };
 
   const { data, error } = await supabase
     .from('Evaluations')
-    .insert(evaluationData)
+    .upsert(evaluationData, { onConflict: ['evaluator', 'resident_name', 'rotation', 'block'] });
 
   if (error) {
     return new Response(JSON.stringify({ message: 'Error saving evaluation', error: error.message }), {

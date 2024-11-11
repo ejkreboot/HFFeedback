@@ -29,6 +29,7 @@ cleanRotations <- function(x) {
   x <- gsub("/Hosp.", "", x);
   x <- gsub("Nephro(logy)*", "Nephrology", x)
   x <- gsub("Neuro(logy)*", "Neurology", x)
+  x <- gsub("Newborn", "PHM Newborn", x)
   x <- gsub("Ophtho(mology)*", "Ophthalmology", x)
   x <- gsub("Ortho(pedics)*", "Orthopedics", x)
   x <- gsub("PCE.*", "PCE", x)
